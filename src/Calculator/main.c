@@ -11,6 +11,7 @@ bool isOp(char c)
 
 void getNum(char in[], int b1, int b2, int* r)
 {
+    /*
     char num[10];
     int i, j = 0;
 
@@ -30,17 +31,19 @@ void getNum(char in[], int b1, int b2, int* r)
             break;
         }
     }
+    */
 }
-
+  /*
 int tokenize(char in[], int len)
 {
+  
     char num1[10], num2[10];
     int r[2];
     char op;
 
     getNum(in, 0, len, r);
     printf("%d, %d", r[0], r[1]);
-    /*
+    
     
     int i = 0;
     int j = 0;
@@ -57,28 +60,75 @@ int tokenize(char in[], int len)
             break;
         }
     }
-    */
+    
 
     //j = 0;
     printf("%s\n%c\n", num1, op);
+    
 }
+*/
+
+char *calculate(char in[220], int len)
+{
+    bool invalid = false;
+    bool opExist = false;
+
+    char n1[110];
+    char n2[110];
+    int n1L = 0;
+    int n2L = 0;
+    char op = '!';
+
+    for (int i = 0; i < len; ++i)
+    {
+        char c = in[i];
+        if (isdigit(c))
+        {
+            if (opExist)
+            {
+                n2[n2L++] = c;
+                continue;
+            }
+            n1[n1L++] = c;
+        }
+        else if (isOp(c))
+        {
+            if (opExist)
+            {
+                invalid = true;
+                break;
+            }
+            op = c;
+            opExist = true;
+        }
+        else
+        {
+            invalid = true;
+            break;
+        }
+    }
+    
+    if (n1L == 0 | n2L == 0 | op == '!' | invalid)
+    {
+        return "Invalid input\n";
+    }
+
+    n1[n1L++] = '\0';
+    n2[n2L++] = '\0';
+    
+    printf("'%s' '%c' '%s' = ?\n", n1, op, n2);
+    return "Valid!!!!";
+}
+
 
 void main()
 {
+    float x = 1.2e2;
+    printf("%f", x);
     char in[220];
-
-    char* ptr;
-    double ret;
-
-    // https://stackoverflow.com/questions/53689670/is-it-better-to-implement-strtol-without-errno
-
-
     while (1)
     {
-        scanf("%219s", in);
-        ret = strtod(in, &ptr);
-        printf("The number(unsigned long integer) is %lf\n", ret);
-        printf("String part is |%s|", ptr);
-        //tokenize(in, strlen(in));
+        scanf("%s219", in);
+        printf("%s\n", calculate(in, strlen(in)));
     }
 }
